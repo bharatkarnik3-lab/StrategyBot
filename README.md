@@ -104,3 +104,27 @@ def my_position(state):
  ⁠
 
 Useful checks: ⁠ cell.occupant ⁠ (who is on a cell), ⁠ cell.owner ⁠ (who owns it), ⁠ cell.is_upgraded ⁠, ⁠ cell.is_frozen ⁠, and ⁠ state.legal_actions ⁠ (what you are allowed to do this turn).
+## Implemented bot and local validation
+
+`bot.py` now implements a bounded planner for captures, upgrades, raids, contested
+movement and defensive shields. It reads only the documented state fields and
+uses the Python standard library. **Only `bot.py` is needed by the competition
+runner**; it does not import the local simulator or tests, make network requests,
+read files, or require API keys or paid services.
+
+Use Python 3.10 or newer for the development tools:
+
+```sh
+python -m unittest discover -s tests -v
+python tools/simulate.py --games 32 --seed 20 --opponents greedy,upgrade,raider
+python tools/simulate.py --games 4 --seed 40 --self-play
+```
+
+The independent simulator checks legal actions, input immutability and per-turn
+execution time while running complete games. It models the published rules;
+**the organisers' server remains the authority**. Baseline results are useful
+local comparisons, not predictions of tournament placement.
+
+See [strategy and validation notes](docs/STRATEGY.md) for the implementation,
+observed results, and limitations. The official submission/arena upload remains
+a separate step; committing code here does not submit an entry.
