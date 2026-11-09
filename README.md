@@ -118,12 +118,17 @@ Use Python 3.10 or newer for the development tools:
 python -m unittest discover -s tests -v
 python tools/simulate.py --games 32 --seed 20 --opponents greedy,upgrade,raider
 python tools/simulate.py --games 4 --seed 40 --self-play
+python tools/simulate.py --games 16 --seed 400 --opponents fortress,fortress,fortress
 ```
 
 The independent simulator checks legal actions, input immutability and per-turn
 execution time while running complete games. It models the published rules;
 **the organisers' server remains the authority**. Baseline results are useful
 local comparisons, not predictions of tournament placement.
+
+Use `tools/compare.py --reference /path/to/previous_bot.py` for paired comparisons
+on identical maps and seats. The current revision fixes a verified endgame
+decision; broader tests have not demonstrated a higher win rate.
 
 See [strategy and validation notes](docs/STRATEGY.md) for the implementation,
 observed results, and limitations. The official submission/arena upload remains

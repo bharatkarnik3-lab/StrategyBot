@@ -159,9 +159,13 @@ class Baseline:
     """Simple reproducible opponents; no privileged game-state information."""
     def __init__(self, kind="greedy", seed=0):
         self.kind, self.rng, self.turn = kind, random.Random(seed), 0
+        self._fortress_previous = None
+        self._fortress_progress = 0
 
     def act(self, state):
         self.turn += 1
+        if self.kind == "fortress":
+            return self._fortress_action(state)
         legal = state.legal_actions
         if legal == ["STAY"] or self.kind == "stay":
             return "STAY"
@@ -212,6 +216,80 @@ class Baseline:
                 queue.append(((rr, cc), distance+1, name if distance == 0 else first))
         return action if action in legal else "STAY"
 
+    def _fortress_action(self, state):
+        """Defend territory and finish valuable upgrades, with finite endgame costs.
+
+        This stronger baseline only uses public snapshots. Its own progress is
+        reconstructed from outcomes, including blocked moves and freeze resets.
+        Existing baseline policies and their random-number streams are unchanged.
+        """
+        board, seat, legal = state.board, state.bot_id, state.legal_actions
+        start = next((r, c) for r in range(8) for c in range(8)
+                     if board[r][c].occupant == seat)
+        here = board[start[0]][start[1]]
+        current = (start, here.owner, here.is_upgraded, here.is_frozen)
+        previous = self._fortress_previous
+        if (previous is not None and previous[:3] == current[:3]
+                and not previous[3] and not current[3]
+                and previous[4] != "SHIELD"):
+            self._fortress_progress += 1
+            needed = 3 if here.owner == seat or here.is_upgraded else 1
+            if self._fortress_progress >= needed:
+                self._fortress_progress = 0
+        else:
+            self._fortress_progress = 0
+
+        def choose(action):
+            action = action if action in legal else ("STAY" if "STAY" in legal else legal[0])
+            self._fortress_previous = current + (action,)
+            return action
+
+        remaining = 81 - self.turn
+        if here.is_frozen or len(legal) == 1:
+            return choose("STAY")
+        if "SHIELD" in legal:
+            intruders = [cell for row in board for cell in row
+                         if cell.owner == seat and cell.occupant not in (0, seat)
+                         and not cell.is_frozen and not cell.is_home
+                         and (remaining >= 3 or not cell.is_upgraded)]
+            if intruders:
+                return choose("SHIELD")
+        need = (3 if here.is_upgraded else 1) - self._fortress_progress
+        if here.owner != seat and not here.is_home and need <= remaining:
+            return choose("STAY")
+        if (here.owner == seat and not here.is_upgraded and here.base_points >= 2
+                and 3 - self._fortress_progress <= remaining):
+            return choose("STAY")
+
+        queue = deque([(start, 0, "STAY")])
+        seen = {start}
+        best, action = -float("inf"), "STAY"
+        while queue:
+            (r, c), distance, first = queue.popleft()
+            cell = board[r][c]
+            if not (cell.is_home and cell.owner != seat) and not (cell.owner == seat and cell.is_upgraded):
+                stays = 3 if cell.owner == seat or cell.is_upgraded else 1
+                if distance == 0:
+                    stays = max(1, stays - self._fortress_progress)
+                cost = distance + stays
+                if cost <= remaining:
+                    gain = cell.base_points * (remaining - cost + 1)
+                    if cell.owner not in (0, seat):
+                        gain += 8 * cell.base_points * (2 if cell.is_upgraded else 1)
+                    score = gain / cost + self.rng.random() * 1e-6
+                    if score > best:
+                        best, action = score, first
+            for name, (dr, dc) in MOVES.items():
+                rr, cc = r+dr, c+dc
+                if (not (0 <= rr < 8 and 0 <= cc < 8) or (rr, cc) in seen
+                        or (distance == 0 and name not in legal)):
+                    continue
+                if board[rr][cc].occupant not in (0, seat):
+                    continue
+                seen.add((rr, cc))
+                queue.append(((rr, cc), distance+1, name if distance == 0 else first))
+        return choose(action)
+
 
 def load_bot(path, name="candidate"):
     spec = importlib.util.spec_from_file_location(name, str(path))
@@ -256,8 +334,8 @@ def main():
     if args.games < 1:
         parser.error("--games must be positive")
     kinds = args.opponents.split(",")
-    if len(kinds) != 3 or any(k not in {"greedy", "upgrade", "raider", "random", "stay"} for k in kinds):
-        parser.error("--opponents requires three of greedy,upgrade,raider,random,stay")
+    if len(kinds) != 3 or any(k not in {"greedy", "upgrade", "raider", "fortress", "random", "stay"} for k in kinds):
+        parser.error("--opponents requires three of greedy,upgrade,raider,fortress,random,stay")
     scores, ranks, timings, pairwise, wins = [], [], [], 0, 0
     results = []
     for i in range(args.games):

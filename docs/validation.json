@@ -1,0 +1,76 @@
+{
+  "recorded_date": "2026-11-09",
+  "reference_commit": "876dee38448693b633e0b0d246a4ec753488117f",
+  "bot_sha256": "6d76663a85c9d7b355abb58f4416b144d41c2340cdd69980c5bfdb5f38302da2",
+  "unit_tests_passed": 43,
+  "conclusion": "Specific endgame correction validated; no measured increase in win rate.",
+  "mixed_seed_200": {
+    "seed_start": 200,
+    "maps": 16,
+    "lineup": [
+      "greedy",
+      "upgrade",
+      "raider"
+    ],
+    "reference": {
+      "games": 64,
+      "first_places_including_ties": 36,
+      "pairwise_win_rate": 0.8125,
+      "mean_score": 2320.06,
+      "mean_rank": 1.562,
+      "decision_ms_p95": 2.395,
+      "decision_ms_max": 16.949
+    },
+    "candidate": {
+      "games": 64,
+      "first_places_including_ties": 36,
+      "pairwise_win_rate": 0.8125,
+      "mean_score": 2320.06,
+      "mean_rank": 1.562,
+      "decision_ms_p95": 2.347,
+      "decision_ms_max": 9.824
+    }
+  },
+  "fortress_seed_400": {
+    "seed_start": 400,
+    "maps": 4,
+    "lineup": [
+      "fortress",
+      "fortress",
+      "fortress"
+    ],
+    "reference": {
+      "games": 16,
+      "first_places_including_ties": 9,
+      "pairwise_win_rate": 0.6667,
+      "mean_score": 2213.75,
+      "mean_rank": 2.0,
+      "decision_ms_p95": 2.281,
+      "decision_ms_max": 5.085
+    },
+    "candidate": {
+      "games": 16,
+      "first_places_including_ties": 9,
+      "pairwise_win_rate": 0.6667,
+      "mean_score": 2213.75,
+      "mean_rank": 2.0,
+      "decision_ms_p95": 2.317,
+      "decision_ms_max": 4.429
+    }
+  },
+  "original_seed_20": {
+    "games": 32,
+    "first_places_including_ties": 25,
+    "pairwise_win_rate": 0.9167,
+    "mean_score": 2552.88,
+    "mean_rank": 1.25,
+    "decision_ms_p95": 2.314,
+    "decision_ms_max": 5.339,
+    "seed_start": 20,
+    "lineup": [
+      "greedy",
+      "upgrade",
+      "raider"
+    ]
+  }
+}

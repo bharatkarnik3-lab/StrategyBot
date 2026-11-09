@@ -179,6 +179,8 @@ def _plan(board, bot_id, pos, positions, memory, legal, deadline):
         seen = set()
         for location, elapsed, own, levels, reward, first, first_target in beam:
             if perf_counter() >= deadline:
+                if best:
+                    memory["target"] = best[6]
                 return (best[5], best_rating) if best else ("STAY", 0.0)
             if location not in cache:
                 cache[location] = _paths(location, blocked)
@@ -256,7 +258,37 @@ def _plan(board, bot_id, pos, positions, memory, legal, deadline):
         expanded.sort(key=lambda item: item[0], reverse=True)
         beam = [node for _, node in expanded[:12]]
         best_rating, best = expanded[0]
+    if best:
+        memory["target"] = best[6]
     return (best[5], best_rating) if best else ("STAY", 0.0)
+
+
+def _profitable_detour(board, bot_id, pos, positions, memory, legal):
+    """Take a safe extra capture when it cannot displace the final project.
+
+    This narrow endgame case has a direct point comparison: capturing here
+    adds value * remaining points and delays the destination income by one
+    turn. Both cells must be neutral, and rivals must be too far away to
+    interfere before we occupy the destination. No shield prediction is needed.
+    """
+    remaining = _TURNS - memory["turn"]
+    target = memory.get("target")
+    if (not 2 <= remaining <= 4 or target is None or target == pos
+            or "STAY" not in legal or board[pos][0] or board[target][0]
+            or board[pos][4] or board[target][4]):
+        return False
+    blocked = {p for seat, p in positions.items() if seat != bot_id}
+    distances, _ = _paths(pos, blocked, legal)
+    # The original project leaves exactly one otherwise unusable action.
+    if distances[target] + 1 != remaining - 1:
+        return False
+    for seat, rival in positions.items():
+        if seat == bot_id:
+            continue
+        for square in (pos, target):
+            if abs(square // 8 - rival // 8) + abs(square % 8 - rival % 8) < remaining:
+                return False
+    return board[pos][5] * remaining > board[target][5]
 
 
 def act(state):
@@ -281,6 +313,9 @@ def act(state):
                                      max(1, _TURNS - memory["turn"]))
         if shield_value > max(9.0, project_value * 0.82):
             action = "SHIELD"
+    if action not in ("STAY", "SHIELD") and _profitable_detour(
+            board, state.bot_id, pos, positions, memory, legal):
+        action = "STAY"
     if action not in legal:
         action = fallback
     memory["action"] = action

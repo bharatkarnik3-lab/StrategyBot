@@ -167,6 +167,51 @@ class BotTests(unittest.TestCase):
         self.assertNotIn(2, shields)
         self.assertNotIn(3, shields)
 
+    def test_endgame_keeps_profitable_capture_before_travel(self):
+        g = self.game
+        # Four actions remain: capture a one-point cell, move twice, then
+        # capture the three-point cell. Skipping the first capture earns one
+        # fewer real point, despite the destination's higher income rate.
+        for row in g.board:
+            for cell in row:
+                if not cell.is_home:
+                    cell.owner, cell.is_upgraded = 1, True
+        g.positions[1] = (3, 3)
+        g.board[3][3].owner, g.board[3][3].is_upgraded = 0, False
+        target = g.board[3][5]
+        target.owner, target.base_points, target.is_upgraded = 0, 3, False
+        self.act(["STAY"])
+        self.bot._MEMORY[1]["turn"] = 75
+        g.turn = 76
+        actions = []
+        for _ in range(4):
+            action = self.act()
+            actions.append(action)
+            g.step({1: action})
+        self.assertEqual(actions, ["STAY", "EAST", "EAST", "STAY"])
+        self.assertEqual(g.board[3][3].owner, 1)
+        self.assertEqual(target.owner, 1)
+        self.assertEqual(g.scores[1], 475)
+
+    def test_endgame_detour_requires_safety_and_spare_turn(self):
+        g = self.game
+        g.positions[1] = (3, 3)
+        memory = {"turn": 76, "target": 29}  # Destination (3, 5).
+        def detour():
+            state = g.state(1)
+            positions = {seat: r * 8 + c for seat, (r, c) in enumerate(g.positions[1:], 1)}
+            return self.bot._profitable_detour(self.bot._snapshot(state), 1, 27,
+                                               positions, memory, state.legal_actions)
+        self.assertTrue(detour())
+        g.positions[2] = (2, 5)
+        self.assertFalse(detour(), "Do not delay a contested destination")
+        g.positions[2] = (0, 7)
+        g.board[3][5].owner = 2
+        self.assertFalse(detour(), "An enemy may shield; the gain is not assured")
+        g.board[3][5].owner = 0
+        memory["target"] = 28
+        self.assertFalse(detour(), "The existing plan has time for another project")
+
     def test_flat_board_compatibility_with_skeleton_description(self):
         state = self.game.state(1)
         state.board = [cell for row in state.board for cell in row]
