@@ -1,0 +1,113 @@
+{
+  "candidate_sha256": "de52225aa4fb369d1673b963e7b0486e49d9c3dfa72e07e93822b27928350e6a",
+  "unit_tests_passed": 34,
+  "candidate_games": 320,
+  "protocol": "96 games per reference: 16 fresh maps, all 6 two-versus-two seat allocations, 80 turns, isolated modules; four cross-program score comparisons per game; ties half.",
+  "repository_modified": false,
+  "duels": {
+    "bot_dev": {
+      "a": "bot_antishield.py",
+      "b": "bot_dev.py",
+      "games": 96,
+      "a_pairwise_rate": 0.5729166666666666,
+      "a_first_places": 67,
+      "a_mean_margin": 48.677083333333336,
+      "a_p95_ms": 2.309949995833449,
+      "a_max_ms": 12.923171998409089,
+      "a_mean_frozen_turns": 1.2447916666666667,
+      "b_mean_frozen_turns": 4.447916666666667,
+      "a_max_repeated_catches": 1,
+      "b_max_repeated_catches": 8,
+      "candidate_sha256": "de52225aa4fb369d1673b963e7b0486e49d9c3dfa72e07e93822b27928350e6a",
+      "opponent_sha256": "2e983f261ffc2cf0576bf287d704171b379cb13681f4839024ddbc31eb2dbc7d",
+      "a_entries": 192,
+      "cross_bot_comparisons": 384,
+      "map_bootstrap_95_interval": [
+        0.5026041666666666,
+        0.6510416666666666
+      ]
+    },
+    "mbot": {
+      "a": "bot_antishield.py",
+      "b": "mbot.py",
+      "games": 96,
+      "a_pairwise_rate": 0.8880208333333334,
+      "a_first_places": 89,
+      "a_mean_margin": 600.53125,
+      "a_p95_ms": 2.2020159958628938,
+      "a_max_ms": 40.59232099825749,
+      "a_mean_frozen_turns": 2.1197916666666665,
+      "b_mean_frozen_turns": 16.036458333333332,
+      "a_max_repeated_catches": 1,
+      "b_max_repeated_catches": 13,
+      "candidate_sha256": "de52225aa4fb369d1673b963e7b0486e49d9c3dfa72e07e93822b27928350e6a",
+      "opponent_sha256": "711e6a47cb032a4a6b2093f3e5df3bb1d087092cbb8cc08bf80ee12a4c12470f",
+      "a_entries": 192,
+      "cross_bot_comparisons": 384,
+      "map_bootstrap_95_interval": [
+        0.8151041666666666,
+        0.9505208333333334
+      ]
+    },
+    "bot_current": {
+      "a": "bot_antishield.py",
+      "b": "bot_current.py",
+      "games": 96,
+      "a_pairwise_rate": 0.9036458333333334,
+      "a_first_places": 98,
+      "a_mean_margin": 472.2708333333333,
+      "a_p95_ms": 2.1557960062636994,
+      "a_max_ms": 12.32137400074862,
+      "a_mean_frozen_turns": 2.8125,
+      "b_mean_frozen_turns": 13.885416666666666,
+      "a_max_repeated_catches": 1,
+      "b_max_repeated_catches": 12,
+      "candidate_sha256": "de52225aa4fb369d1673b963e7b0486e49d9c3dfa72e07e93822b27928350e6a",
+      "opponent_sha256": "6d76663a85c9d7b355abb58f4416b144d41c2340cdd69980c5bfdb5f38302da2",
+      "a_entries": 192,
+      "cross_bot_comparisons": 384,
+      "map_bootstrap_95_interval": [
+        0.84375,
+        0.9557291666666666
+      ]
+    }
+  },
+  "shield_stress": {
+    "bot_antishield.py": {
+      "games": 32,
+      "wins": 19,
+      "pairwise": 0.8541666666666666,
+      "mean_score": 2596.03125,
+      "mean_frozen_turns": 0.78125,
+      "max_catches_same_cell": 1,
+      "max_ms": 12.110745999962091
+    },
+    "bot_dev.py": {
+      "games": 32,
+      "wins": 21,
+      "pairwise": 0.875,
+      "mean_score": 2594.46875,
+      "mean_frozen_turns": 1.4375,
+      "max_catches_same_cell": 3,
+      "max_ms": 9.24052899790695
+    },
+    "mbot.py": {
+      "games": 32,
+      "wins": 19,
+      "pairwise": 0.7916666666666666,
+      "mean_score": 2481.46875,
+      "mean_frozen_turns": 7.09375,
+      "max_catches_same_cell": 8,
+      "max_ms": 22.169493000546936
+    },
+    "bot_current.py": {
+      "games": 32,
+      "wins": 7,
+      "pairwise": 0.4791666666666667,
+      "mean_score": 2122.03125,
+      "mean_frozen_turns": 6.84375,
+      "max_catches_same_cell": 10,
+      "max_ms": 6.454207999922801
+    }
+  }
+}
