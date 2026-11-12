@@ -1,0 +1,132 @@
+{
+  "uploaded": {
+    "games": 72,
+    "a_pairwise_rate": 0.5416666666666666,
+    "a_first_places": 51,
+    "a_mean_margin": 23.020833333333332,
+    "a_p95_ms": 2.8869970000187095,
+    "a_max_ms": 42.31467100004238,
+    "a_mean_frozen_turns": 1.5416666666666667,
+    "b_mean_frozen_turns": 1.7291666666666667,
+    "a_max_repeated_catches": 1,
+    "b_max_repeated_catches": 1,
+    "map_bootstrap_95_percent": [
+      0.4756944444444444,
+      0.6041666666666666
+    ],
+    "seeds": [
+      5100,
+      5101,
+      5102,
+      5103,
+      5104,
+      5105,
+      5106,
+      5107,
+      5108,
+      5109,
+      5110,
+      5111
+    ]
+  },
+  "previous": {
+    "games": 48,
+    "a_pairwise_rate": 0.5104166666666666,
+    "a_first_places": 33,
+    "a_mean_margin": 6.052083333333333,
+    "a_p95_ms": 3.5440069999594925,
+    "a_max_ms": 44.42254500003173,
+    "a_mean_frozen_turns": 1.4166666666666667,
+    "b_mean_frozen_turns": 1.3854166666666667,
+    "a_max_repeated_catches": 1,
+    "b_max_repeated_catches": 1,
+    "map_bootstrap_95_percent": [
+      0.4791666666666667,
+      0.5416666666666666
+    ],
+    "seeds": [
+      5200,
+      5201,
+      5202,
+      5203,
+      5204,
+      5205,
+      5206,
+      5207
+    ]
+  },
+  "bot_dev": {
+    "games": 24,
+    "a_pairwise_rate": 0.6510416666666666,
+    "a_first_places": 17,
+    "a_mean_margin": 77.47916666666667,
+    "a_p95_ms": 3.1868190000068353,
+    "a_max_ms": 40.68533000003072,
+    "a_mean_frozen_turns": 2.0625,
+    "b_mean_frozen_turns": 6.6875,
+    "a_max_repeated_catches": 1,
+    "b_max_repeated_catches": 7,
+    "map_bootstrap_95_percent": [
+      0.53125,
+      0.7708333333333333
+    ],
+    "seeds": [
+      5300,
+      5301,
+      5302,
+      5303
+    ]
+  },
+  "mbot": {
+    "games": 24,
+    "a_pairwise_rate": 0.9270833333333334,
+    "a_first_places": 28,
+    "a_mean_margin": 702.0208333333334,
+    "a_p95_ms": 4.323419999991529,
+    "a_max_ms": 42.788174000008894,
+    "a_mean_frozen_turns": 1.8958333333333333,
+    "b_mean_frozen_turns": 19.145833333333332,
+    "a_max_repeated_catches": 1,
+    "b_max_repeated_catches": 12,
+    "map_bootstrap_95_percent": [
+      0.8958333333333333,
+      0.9583333333333334
+    ],
+    "seeds": [
+      5300,
+      5301,
+      5302,
+      5303
+    ]
+  },
+  "shield_stress": [
+    {
+      "bot": "bot.py",
+      "games": 16,
+      "pairwise": 0.7916666666666666,
+      "first_places": 8,
+      "mean_score": 2583.0,
+      "mean_frozen": 0.5625,
+      "max_repeated": 1,
+      "max_ms": 9.249777999968956
+    },
+    {
+      "bot": "references/uploaded.py",
+      "games": 16,
+      "pairwise": 0.8333333333333334,
+      "first_places": 9,
+      "mean_score": 2579.1875,
+      "mean_frozen": 0.25,
+      "max_repeated": 1,
+      "max_ms": 6.456171999957405
+    }
+  ],
+  "sha256": "070874df75a4c09d67a0300646abfa31d6dd4ab68247b344021413ad13b134cd",
+  "reference_sha256": {
+    "uploaded": "228929d292e3ad889ae5c1c42b99d9003dd5cd309195b1dfb767a3fb7b469bc8",
+    "previous": "de52225aa4fb369d1673b963e7b0486e49d9c3dfa72e07e93822b27928350e6a",
+    "bot_dev": "2e983f261ffc2cf0576bf287d704171b379cb13681f4839024ddbc31eb2dbc7d",
+    "mbot": "711e6a47cb032a4a6b2093f3e5df3bb1d087092cbb8cc08bf80ee12a4c12470f"
+  },
+  "unit_tests": 40
+}
